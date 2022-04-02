@@ -1,7 +1,7 @@
 import { defineComponent, type ComponentOptions } from "vue"
 
 export default class VueBase {
-  static buildSteps = ['LifecycleHooks', 'Methods', 'Data']
+  static buildSteps = ['LifecycleHooks', 'Methods', 'Data', 'Computed']
   static lifecycleHooks = [ 'created', 'mounted' ]
 
   _buildLifecycleHooks(): ComponentOptions {
@@ -25,6 +25,18 @@ export default class VueBase {
     this._descriptors.forEach(([key, descriptor]) => {
       if (key !== 'constructor' && descriptor.value && typeof descriptor.value === 'function') {
         opts.methods[key] = descriptor.value
+      }
+    })
+    return opts
+  }
+
+  _buildComputed(): ComponentOptions {
+    const opts = {
+      computed: {}
+    }
+    this._descriptors.forEach(([key, descriptor]) => {
+      if (key !== 'constructor' && descriptor.get && typeof descriptor.get === 'function') {
+        opts.computed[key] = descriptor.get
       }
     })
     return opts

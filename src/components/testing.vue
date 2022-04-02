@@ -12,6 +12,15 @@ export default class Testing extends VueBase {
 
   firstName: string = 'Johnny';
   count = 0
+  price = 15
+
+  created() {
+    console.log('mounted');
+  }
+
+  get totalPrice() {
+    return this.count * this.price
+  }
 
   mounted() {
     console.log('mounted');
@@ -27,6 +36,7 @@ export default class Testing extends VueBase {
   <div class="testing">
     <span>{{ firstName }} :  {{ count }}</span>
     <button @click="increment">Increment</button>
+    <span> Total Price : ${{ totalPrice }}</span>
   </div>
 </template>
 
