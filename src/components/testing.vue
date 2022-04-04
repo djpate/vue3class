@@ -7,6 +7,16 @@ function Component(extraOptions: ComponentOptions) {
   }
 }
 
+function Watch(methodToWatch){
+  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+    let classProto = Object.getPrototypeOf(target)
+    classProto._watchers ||= {}
+    classProto._watchers[methodToWatch] ||= []
+    classProto._watchers[methodToWatch].push(descriptor.value)
+    return descriptor.value
+  };
+}
+
 @Component({})
 export default class Testing extends VueBase {
 
@@ -20,6 +30,11 @@ export default class Testing extends VueBase {
 
   get totalPrice() {
     return this.count * this.price
+  }
+
+  @Watch('count')
+  onCountChange(newValue: number, oldValue: number) {
+    console.log(`count changed from ${oldValue} to ${newValue}`);
   }
 
   mounted() {

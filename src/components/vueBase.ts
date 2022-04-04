@@ -1,7 +1,7 @@
 import { defineComponent, type ComponentOptions } from "vue"
 
 export default class VueBase {
-  static buildSteps = ['LifecycleHooks', 'Methods', 'Data', 'Computed']
+  static buildSteps = ['LifecycleHooks', 'Methods', 'Data', 'Computed', 'Watchers']
   static lifecycleHooks = [ 'created', 'mounted' ]
 
   _buildLifecycleHooks(): ComponentOptions {
@@ -52,10 +52,18 @@ export default class VueBase {
     return opts
   }
 
+  _buildWatchers(): ComponentOptions {
+    let opts = {}
+    let data = {}
+    for (let key of Object.keys(this._watchers)) {
+      opts = { ...opts, watch: { ...opts.watch, [key]: this._watchers[key] } }
+    }
+    return opts
+  }
+
   toComponent(extras: ComponentOptions = {}) {
     let opts: ComponentOptions = extras
     for(let step of VueBase.buildSteps) {
-      console.log('Building step:', step)
       opts = { ...opts, ...this['_build' + step]() }
     }
     return defineComponent(opts)
