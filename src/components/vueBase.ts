@@ -48,7 +48,7 @@ export default class VueBase {
     Object.getOwnPropertyNames(this).map(variableName => {
       data[variableName] = this[variableName]
     })
-    opts.data = () => data
+    opts.data = () => ({...data})
     return opts
   }
 
