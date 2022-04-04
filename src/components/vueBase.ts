@@ -44,11 +44,11 @@ export default class VueBase {
 
   _buildData(): ComponentOptions {
     const opts = {}
-    let data = {}
+    let dataOpts = {}
     Object.getOwnPropertyNames(this).map(variableName => {
-      data[variableName] = this[variableName]
+      dataOpts[variableName] = this[variableName]
     })
-    opts.data = () => data
+    opts.data = () => ({...dataOpts})
     return opts
   }
 
